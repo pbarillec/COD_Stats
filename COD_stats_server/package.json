@@ -1,0 +1,29 @@
+{
+  "name": "cod_stats_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/app.js",
+  "scripts": {
+    "start": "nodemon -L ./src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "axios": "^0.21.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-jwt": "^6.0.0",
+    "express-session": "^1.17.1",
+    "mongodb": "^3.6.4",
+    "mongoose": "^5.11.19",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.7",
+    "rootpath": "^0.1.2",
+    "swagger-ui-express": "^4.1.6"
+  }
+}
