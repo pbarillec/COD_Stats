@@ -26,8 +26,8 @@ services:
       - back
     volumes:
       - ./COD_stats_client:/app
-      - /app/node_modules
-      #- ./COD_stats_client/node_modules:/app/node_modules
+      # - /app/node_modules
+      - ./COD_stats_client/node_modules:/app/node_modules
     env_file:
       - config.env
 
