@@ -1,27 +1,19 @@
-# pull the base image
-FROM node:15.11.0
+FROM node:15.11.0 as base
 
-# set the working direction
 WORKDIR /app
 
-
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
-
-# install app dependencies
 COPY package*.json ./
-
-
 RUN npm install
 
-RUN ls -a node_modules
+FROM base
 
-# add app
-COPY . ./
+WORKDIR /app
 
-#CMD ["cp", "/var/lib/shared/client.apk", "./public/"]
-#CMD ["ls", "/app/public"]
+COPY --from=base /app/node_modules/ ./
+COPY package*.json ./
+COPY src/ ./src
+COPY public/ ./public
 
-# start app
-#RUN ["ln", "-sf", "/var/lib/apk/client.apk", "public/"]
+EXPOSE 8081
+
 CMD ["npm", "start"]
