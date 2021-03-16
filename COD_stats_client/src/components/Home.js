@@ -22,7 +22,7 @@ class Home extends Component {
     render() {
         return (
             <div>
-                <h1>Horerme</h1>
+                <h1>Home</h1>
 
                 {this.state.isLogin ? 
                     <button onClick={() => this.handleLogout()}>Click here to log out</button>

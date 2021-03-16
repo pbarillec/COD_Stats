@@ -10,24 +10,23 @@ services:
     networks:
       - back
     volumes:
-      - ./COD_stats_server:/app
-      - /app/node_modules
+      - ./COD_stats_server/src:/app/src
     env_file:
       - config.env
  
   client:
     build: ./COD_stats_client
     container_name: COD_stats_client
-
     restart: always
     ports:
         - "8081:8081"
     networks:
       - back
     volumes:
-      - ./COD_stats_client:/app
-      # - /app/node_modules
-      - ./COD_stats_client/node_modules:/app/node_modules
+      - /app/node_modules
+      - ./COD_stats_client/src:/app/src
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
     env_file:
       - config.env
 
