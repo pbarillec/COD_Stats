@@ -29,6 +29,8 @@ app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: 
 
 // require("./config/passport");
 
+app.use('/doc', require('./helpers/swagger'))
+
 app.use('/', (req, res) => {
     res.status(200).json("cc");
 })

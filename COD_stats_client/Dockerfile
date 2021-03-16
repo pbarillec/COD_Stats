@@ -10,11 +10,10 @@ FROM base
 
 WORKDIR /app
 
-COPY --from=base /app/node_modules/ ./
-COPY package*.json ./
-COPY src/ ./src
-COPY public/ ./public
+COPY --from=base /app/node_modules/ ./node_modules
+
+COPY . .
 
 EXPOSE 8081
 
-CMD ["npm", "start"]
+CMD [ "npm", "start" ]

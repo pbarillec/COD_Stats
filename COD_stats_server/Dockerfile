@@ -9,11 +9,13 @@ COPY package*.json ./
 RUN npm install
 
 FROM base
- 
-COPY --from=base /app/node_modules/ ./
-COPY src/ ./src
-COPY package*.json ./
+
+WORKDIR /app
+
+COPY --from=base /app/node_modules/ ./node_modules
+
+COPY . .
 
 EXPOSE 8080
 
-CMD [ "npm", "run", "start" ]
+CMD [ "npm", "start" ]

@@ -11,6 +11,8 @@ services:
       - back
     volumes:
       - ./COD_stats_server/src:/app/src
+      - ./COD_stats_server/swagger.yaml:/app/swagger.yaml
+      - /app/node_modules
     env_file:
       - config.env
  
@@ -23,8 +25,8 @@ services:
     networks:
       - back
     volumes:
-      - /app/node_modules
       - ./COD_stats_client/src:/app/src
+
     environment:
       CHOKIDAR_USEPOLLING: "true"
     env_file:
