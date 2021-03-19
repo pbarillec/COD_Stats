@@ -8,8 +8,11 @@ import PrivateRoute from './components/PrivateRoute.js';
 import PublicRoute from './components/PublicRoute.js';
 import Register from './components/Register.js';
 import Login from './components/Login.js';
+<<<<<<< HEAD
 import NotFound from './components/404.js';
 
+=======
+>>>>>>> 85579ab... ADD- widgets
 
 const API_URL = "http://" + process.env.REACT_APP_BASE_URL + ":8080/auth/";
 
@@ -24,6 +27,7 @@ class App extends Component {
   render () {
     return (
       <BrowserRouter>
+<<<<<<< HEAD
         <Switch>
           <PublicRoute restricted={false} component={Home} path="/" exact />
           <PublicRoute restricted={true} component={SignIn} path="/signin" exact />
@@ -33,6 +37,16 @@ class App extends Component {
           <PublicRoute restricted={false} component={NotFound} />
         </Switch>
       </BrowserRouter>
+=======
+      <Switch>
+        <PublicRoute restricted={false} component={Home} path="/" exact />
+        <PublicRoute restricted={true} component={SignIn} path="/signin" exact />
+        <PublicRoute restricted={true} component={Login} path="/login" exact />
+        {/* <PublicRoute restricted={true} component={Register} path="/register" exact /> */}
+        <PrivateRoute component={Dashboard} path="/dashboard" exact />
+      </Switch>
+    </BrowserRouter>
+>>>>>>> 85579ab... ADD- widgets
     );
   }
 }
