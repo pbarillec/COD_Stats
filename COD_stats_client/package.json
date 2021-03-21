@@ -18,9 +18,13 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "chart.js": "^2.9.4",
 =======
 >>>>>>> 85579ab... ADD- widgets
+=======
+    "chart.js": "^2.9.4",
+>>>>>>> 26aab66... ADD - navbar
     "echarts": "^5.0.2",
     "echarts-for-react": "^3.0.1",
     "query-string": "^6.14.1",

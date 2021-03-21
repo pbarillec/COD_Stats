@@ -9,10 +9,15 @@ import PublicRoute from './components/PublicRoute.js';
 import Register from './components/Register.js';
 import Login from './components/Login.js';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import NotFound from './components/404.js';
 
 =======
 >>>>>>> 85579ab... ADD- widgets
+=======
+import NotFound from './components/404.js';
+
+>>>>>>> 26aab66... ADD - navbar
 
 const API_URL = "http://" + process.env.REACT_APP_BASE_URL + ":8080/auth/";
 
@@ -28,6 +33,9 @@ class App extends Component {
     return (
       <BrowserRouter>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 26aab66... ADD - navbar
         <Switch>
           <PublicRoute restricted={false} component={Home} path="/" exact />
           <PublicRoute restricted={true} component={SignIn} path="/signin" exact />
@@ -37,6 +45,7 @@ class App extends Component {
           <PublicRoute restricted={false} component={NotFound} />
         </Switch>
       </BrowserRouter>
+<<<<<<< HEAD
 =======
       <Switch>
         <PublicRoute restricted={false} component={Home} path="/" exact />
@@ -47,6 +56,8 @@ class App extends Component {
       </Switch>
     </BrowserRouter>
 >>>>>>> 85579ab... ADD- widgets
+=======
+>>>>>>> 26aab66... ADD - navbar
     );
   }
 }

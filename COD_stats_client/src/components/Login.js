@@ -6,12 +6,16 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import config from "../config";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { login } from '../utils';
 =======
 import axios from "axios";
 import API from "@callofduty/api";
 import OAuth2Login from 'react-simple-oauth2-login';
 >>>>>>> 85579ab... ADD- widgets
+=======
+import { login } from '../utils';
+>>>>>>> 26aab66... ADD - navbar
 
 
 const Login = () => {
@@ -26,6 +30,9 @@ const Login = () => {
     });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 26aab66... ADD - navbar
     await fetch(`https://localhost:8081/login`, {
       method: "POST",
       headers: {
@@ -49,6 +56,7 @@ const Login = () => {
 
         !error && e.target.reset();
       });
+<<<<<<< HEAD
 =======
     // // Step 1: Instantiate the API
     // const CallOfDutyAPI = new API()
@@ -113,6 +121,8 @@ const Login = () => {
     //     !error && e.target.reset();
     //   });
 >>>>>>> 85579ab... ADD- widgets
+=======
+>>>>>>> 26aab66... ADD - navbar
   };
 
   return (
@@ -208,6 +218,7 @@ const Login = () => {
                 Login
               </button>
 <<<<<<< HEAD
+<<<<<<< HEAD
             </div>
           </form>
         </fieldset>
@@ -230,6 +241,11 @@ const Login = () => {
                 <span className="button-label">Sign up with Battle.net</span>
         </OAuth2Login>
 >>>>>>> 85579ab... ADD- widgets
+=======
+            </div>
+          </form>
+        </fieldset>
+>>>>>>> 26aab66... ADD - navbar
       </div>
     </div>
   );
