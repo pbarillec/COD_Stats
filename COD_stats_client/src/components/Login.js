@@ -5,9 +5,7 @@ import styles from "../styles/Login.css";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import config from "../config";
-import axios from "axios";
-import API from "@callofduty/api";
-import OAuth2Login from 'react-simple-oauth2-login';
+import { login } from '../utils';
 
 
 const Login = () => {
@@ -21,68 +19,29 @@ const Login = () => {
       type: "alert-warning",
     });
 
-    // // Step 1: Instantiate the API
-    // const CallOfDutyAPI = new API()
-    // // Step 2: Login with email + password (top-level await as shown below may not be available in your environment, wrap as necessary)
-    // const { xsrf, sso, atkn } = await CallOfDutyAPI.Authorize(data.email, data.password)
-    // // Step 3: Update API instance and continue as an authenticated user
-    // CallOfDutyAPI.UseTokens({ xsrf, sso, atkn })
-    // // Step 4: Fetch the identity for this account to find username/platform for desired game
-    // const { titleIdentities } = await CallOfDutyAPI.Identity()
-    // // Step 5: Filter for game-specific profiles (we'll use MW and assume there is only one profile but multiple are supported)
-    // const { username, platform } = titleIdentities.find(identity => identity.title === 'mw')
-    // console.log("TEST");
-    // console.log(xsrf);
-    // console.log("username");
-    // console.log(username);
+    await fetch(`https://localhost:8081/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(`username=${data.email}`, `password=${data.password}`)
+    })
+      .then((res) => res.json())
+      .then(({ error, data }) => {
+        setMessage({
+          data: error || "Logged in successfully, redirecting...",
+          type: error ? "alert-danger" : "alert-success",
+        });
 
-    // var setCookie = require('set-cookie-parser');
+        !error &&
+          setTimeout(() => {
+            localStorage.setItem("token", data.token);
+            login();
+            history.push("/dashboard/cold_war");
+          }, 3000);
 
-
-    // const response = await fetch(`https://profile.callofduty.com/cod/login`, {
-    //     method: "GET",
-    // })
-
-    // var combinedCookieHeader = response.headers.get('Set-Cookie');
-    // var splitCookieHeaders = setCookie.splitCookiesString(combinedCookieHeader)
-    // var cookies = setCookie.parse(splitCookieHeaders);
-
-    // console.log(cookies); // should be an array of cookies
-
-    // const response = await axios.get('https://profile.callofduty.com/cod/login')
-    // .then(response => {
-    //     console.log(response)
-    // });
-    // console.log(response.headers["Set-Cookie"]);
-    // console.log(document.cookie);
-    // const test = response.headers;
-    // console.log(document.cookie);
-    // console.log(response.headers);
-    // await fetch(`https://profile.callofduty.com/do_login?new_SiteId=cod`, {
-    // // fetch(`${config.baseUrl}/user/login`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "Cookie" : "XSRF-TOKEN=M4Nx2PCh8ikrJdZOr3TTg4TbLDO3SFVKBThMdHqVucb_bljZ7qlTfbsyRgXGByGS"
-    //   },
-    //   body: JSON.stringify(`username=${data.email}`, `password=${data.password}`, `remember_me=true`, `_csrf=M4Nx2PCh8ikrJdZOr3TTg4TbLDO3SFVKBThMdHqVucb_bljZ7qlTfbsyRgXGByGS`)
-    // //   JSON.stringify(data),
-    // })
-    //   .then((res) => res.json())
-    //   .then(({ error, data }) => {
-    //     setMessage({
-    //       data: error || "Logged in successfully, redirecting...",
-    //       type: error ? "alert-danger" : "alert-success",
-    //     });
-
-    //     !error &&
-    //       setTimeout(() => {
-    //         localStorage.setItem("token", data.token);
-    //         history.push("/dashboard");
-    //       }, 3000);
-
-    //     !error && e.target.reset();
-    //   });
+        !error && e.target.reset();
+      });
   };
 
   return (
@@ -177,23 +136,9 @@ const Login = () => {
               <button type="submit" className="btn btn-outline-primary">
                 Login
               </button>
-
-              <button className="btn btn-link ml-auto">
-                <Link to="/register">New User</Link>
-              </button>
             </div>
           </form>
         </fieldset>
-        <OAuth2Login
-              authorizationUrl="https://us.battle.net/oauth/authorize"
-              responseType="code"
-              clientId={process.env.REACT_APP_BATTLE_NET_CLIENT_ID}
-              redirectUri={"http://localhost:8081/login"}
-              onSuccess={(e) => {console.log(e)}}
-              onFailure={(e) => {}}
-              className="btn btn-primary btn-block btn-google">
-                <span className="button-label">Sign up with Battle.net</span>
-        </OAuth2Login>
       </div>
     </div>
   );

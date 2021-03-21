@@ -5,7 +5,7 @@ const SignIn = (props) => {
 
     const handleLogin = () => {
         login();
-        props.history.push('/dashboard');
+        props.history.push('/dashboard/cold_war');
     }
 
     return (
