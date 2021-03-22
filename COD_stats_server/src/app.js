@@ -31,6 +31,7 @@ app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: 
 // require("./config/passport");
 
 app.use('/auth', require('./routes/auth/auth.controller'));
+app.use('/stats', require('./routes/stats/stats.controller'));
 
 
 app.use('/doc', require('./helpers/swagger'))

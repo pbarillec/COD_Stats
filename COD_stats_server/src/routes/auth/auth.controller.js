@@ -8,28 +8,31 @@ const auth = require('./auth.service');
 
 router.post("/signin", signinSchema, signin);
 router.post("/signup", signupSchema, signup);
+
 router.post("/refresh-token", refreshToken);
 
 module.exports = router;
 
 function signupSchema(req, res, next) {
     const schema = Joi.object({
-        token: Joi.string().required()
+        email: Joi.string().required(),
+        password: Joi.string().required()
     });
     validateRequest(req, next, schema);
 }
 
 function signinSchema(req, res, next) {
     const schema = Joi.object({
-        token: Joi.string().required()
+        email: Joi.string().required(),
+        password: Joi.string().required()
     });
     validateRequest(req, next, schema);
 }
 
 function signin(req, res, next) {
-    const {token} = req.body;
+    const {email, password} = req.body;
     const ipAddress = req.ip;
-    auth.authenticate(token, ipAddress)
+    auth.authenticate(email, password, ipAddress)
     .then(({ refresh_token, access_token, ...user}) => {
         setTokenCookie(res, refresh_token);
         res.json({ user, access_token: access_token });
@@ -38,9 +41,9 @@ function signin(req, res, next) {
 }
 
 function signup(req, res, next) {
-    const {token} = req.body;
+    const {email, password} = req.body;
     const ipAddress = req.ip;
-    auth.authenticate(token, ipAddress)
+    auth.register(email, password, ipAddress)
         .then(({ refresh_token, access_token, ...user}) => {
             setTokenCookie(res, refresh_token);
             res.json({user, access_token: access_token});

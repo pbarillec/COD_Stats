@@ -5,23 +5,33 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    battle_net: {
-        battletag: {
-            type: String,
-            required: true
+    email: {
+        type: String,
+        required: true
+    },
+    sso: {
+        type: Object,
+        value: {
+            type: String
         },
-        id: {
-            type: String,
-            required: true
+        expiry: {
+            type: String
         },
-        sub: {
-            type: String,
-            required: true
-        },
-        access_token: {
-            type: String,
-            required: true
+        remember_me: {
+            type: String
         }
+    },
+    aktn: {
+        type: String
+    },
+    pgacct: {
+        type: String
+    },
+    cw_username: {
+        type: String
+    },
+    wz_username: {
+        type: String
     }
 });
 

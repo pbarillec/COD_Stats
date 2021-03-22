@@ -10,34 +10,91 @@ const axios = require('axios')
 const { ErrorHandler } = require('../../helpers/error');
 const { USER_NOT_FOUND, INVALID_CREDENTIALS, USER_ALREADY_EXIST, UNAUTHORIZED, INVALID_AUTH_CODE } = require('../../helpers/error-type');
 
-var CODclient = require('../../COD.client')
+var CODclient = require('../../COD.client');
 
 module.exports = {
     authenticate,
+    register,
+    getStats,
     refreshToken,
     revokeToken,
     getRefreshTokens
 };
 
-async function authenticate(token, ipAddress)
+async function authenticate(email, password, ipAddress)
 {
     var client = new CODclient();
     await client.initialize();
-    await client.login("email", "password");
+    await client.login(email, password);
 
+    var user = await db.User.findOne({"email": email});
+    if (!user)
+        throw new ErrorHandler(USER_NOT_FOUND);
+    var credentials = await client.getCredentials();
+    user.sso = credentials.sso;
+    user.aktn = credentials.aktn;
+    user.pgacct = credentials.pgacct;
+    await user.save();
+    const access_token = generateJwtToken(user);
+    const refresh_token = generateRefreshToken(user, ipAddress);
+    await refresh_token.save();
+    return { 
+        ...basicDetails(user),
+        access_token,
+        refresh_token
+    }
+}
 
-
+async function register(email, password, ipAddress)
+{
+    var client = new CODclient();
+    await client.initialize();
+    await client.login(email, password);
     var identities = await client.getIdentities();
-    
-    var friends = await client.getFriends();
 
-    var recent_matches = await client.getRecentMatches("Bygius", CODclient.GAMES.COLD_WAR, CODclient.MODES.MULTIPLAYER);
-    var statistics = await client.getStatistics("Bygius", CODclient.GAMES.COLD_WAR, CODclient.MODES.MULTIPLAYER);
-    
-    //console.log(recent_matches);
-    //console.log(statistics);
-    //console.log(identities);
-    return null;
+
+
+    var credentials = await client.getCredentials();
+
+    var user = await db.User.findOne({"email": email});
+    if (user)
+        throw new ErrorHandler(USER_ALREADY_EXIST);
+    user = new db.User;
+    user.email = email;
+    user.role = "user";
+    user.sso = credentials.sso;
+    user.aktn = credentials.aktn;
+    user.pgacct = credentials.pgacct;
+
+    for (var i of identities.titleIdentities) {
+        if (i.title == "cw")
+            user.cw_username = i.username
+        if (i.title == "mw")
+            user.wz_username = i.username
+    }
+
+
+    await user.save();
+    const access_token = generateJwtToken(user);
+    const refresh_token = generateRefreshToken(user, ipAddress);
+    await refresh_token.save();
+    return { 
+        ...basicDetails(user),
+        access_token,
+        refresh_token
+    }
+}
+
+async function getStats(user_id)
+{
+    var user = await db.User.findById(user_id);
+
+    if (!user)
+        throw new ErrorHandler(...USER_NOT_FOUND);
+    var client = new CODclient();
+    await client.initialize();
+    client.setCredentials(user.sso.value, user.sso.expiry, user.sso.remember_me, user.aktn, user.pgacct)
+    console.log(await client.getFriends());
 }
 
 async function refreshToken(token, ipAddress) {
@@ -114,7 +171,6 @@ function randomTokenString() {
 }
 
 function basicDetails(user) {
-    const { id, battle_net} = user;
-    const { battletag } = battle_net;
-    return { id, battletag};
+    const { id, email, role} = user;
+    return { id, email, role};
 }

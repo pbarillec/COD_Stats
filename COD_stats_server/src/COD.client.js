@@ -81,7 +81,6 @@ class CODclient {
                 reject(this._error_handler(response));
             })
             .catch((e)=> {
-                console.log(e.response)
                 for (var i in e.response.headers['set-cookie']) {
                     var re = /([^;]+);?(\w?)=([^;]*)/g
                     var tmp = e.response.headers['set-cookie'][i].split(re);
@@ -117,7 +116,6 @@ class CODclient {
         return new Promise(((resolve, reject) => {
             axios.get(`https://www.callofduty.com/api/papi-client/crm/cod/v2/identities/${this.sso_cookie}`, this._buildHeader())
             .then((response) => {
-                console.log(response);
                 resolve(response.data.data);
             })
             .catch((e)=> {
@@ -174,6 +172,20 @@ class CODclient {
             })
         }))
     }
+    getWeapon(username, game = CODclient.GAMES.MODERN_WARFARE, mode = CODclient.MODES.MULTIPLAYER)
+    {
+        return new Promise(((resolve, reject) => {
+            axios.get(`https://my.callofduty.com/api/papi-client/stats/cod/v1/title/${game}/platform/${this.pgacct}/gamer/${username}/profile/type/${mode}`, this._buildHeader())
+            .then((response) => {
+                console.log(response.data.data);
+                resolve(response.data.data.lifetime.itemData);
+            })
+            .catch((e)=> {
+                reject(this._error_handler(e.response));
+            })
+        }))
+    }
+
     getCredentials()
     {
         return {
@@ -187,13 +199,12 @@ class CODclient {
             pgacct: this.pgacct 
         }
     }
-    setCredentials(sso_cookie, sso_expiry, sso_remember_me, aktn, xsrf_token, pgacct)
+    setCredentials(sso_cookie, sso_expiry, sso_remember_me, aktn, pgacct)
     {
         this.sso_cookie = sso_cookie;
         this.sso_expiry = sso_expiry;
         this.sso_remember_me = sso_remember_me;
         this.aktn = aktn;
-        this.xsrf_token = xsrf_token;
         this.pgacct = pgacct;
     }
 }
