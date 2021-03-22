@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const morgan = require('morgan');
 var session = require('express-session');
+const handleError = require('./middleware/error-handler');
 
 
 // create test user in db on startup if required
@@ -29,11 +30,17 @@ app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: 
 
 // require("./config/passport");
 
+app.use('/auth', require('./routes/auth/auth.controller'));
+
+
 app.use('/doc', require('./helpers/swagger'))
 
-app.use('/', (req, res) => {
-    res.status(200).json("cc");
-})
+// app.use('/', (req, res) => {
+//     res.status(200).json("cc");
+// })
+
+app.use(handleError);
+
 
 // start server
 const port = 8080//process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 3000;
