@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 26aab66... ADD - navbar
 // import React, { Component } from 'react';
 // import ReactEcharts from 'echarts-for-react';
 // import Chart from "chart.js";
@@ -72,7 +68,6 @@
 
 // export default LastGames;
 
-<<<<<<< HEAD
 import React, { Component } from 'react';
 import ReactEcharts from 'echarts-for-react';
 import { Line } from '@reactchartjs/react-chart.js';
@@ -106,47 +101,6 @@ const LastGames = (props) => {
             <Line data={data} options={options}/>
         </div>
     );
-=======
-=======
->>>>>>> 26aab66... ADD - navbar
-import React, { Component } from 'react';
-import ReactEcharts from 'echarts-for-react';
-import { Line } from '@reactchartjs/react-chart.js';
-
-const LastGames = (props) => {
-    const data = {
-        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-        datasets: [
-          {
-            label: 'Score per game',
-            data: props.lg,
-            fill: false,
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgba(255, 99, 132, 0.2)',
-          },
-        ],
-    }
-<<<<<<< HEAD
-
->>>>>>> 85579ab... ADD- widgets
-=======
-    const options = {
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-              },
-            },
-          ],
-        },
-    }
-    return (
-        <div>
-            <Line data={data} options={options}/>
-        </div>
-    );
->>>>>>> 26aab66... ADD - navbar
 };
 
 export default LastGames;
