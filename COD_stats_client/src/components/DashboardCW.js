@@ -9,6 +9,7 @@ import NavBar from './NavBar.js'
 
 
 
+
 class Dashboard extends Component {
     constructor(props) {
         super(props)
@@ -17,9 +18,11 @@ class Dashboard extends Component {
             death: undefined,
             win: undefined,
             lose: undefined,
-            matches: [],
             weapons: []
-        }
+        };
+        this.temp = []
+
+
     }
 
     async componentDidMount() {
@@ -27,22 +30,26 @@ class Dashboard extends Component {
         const config = { headers: { 'Authorization': 'Bearer ' + token }};
         this.get_stats_cw(config);
         this.get_matches_cw(config);
-        this.get_weapons_cw(config);
+        // this.get_weapons_cw(config);
     }
 
     async get_stats_cw(config) {
         var call_api = await fetch('http://localhost:8080/stats/cw', config);
         var response = await call_api.json();
-        this.setState( {kills: response.kill} );
-        this.setState( {death: response.death} );
-        this.setState( {win: response.win} );
-        this.setState( {lose: response.lose} );
+        this.setState( {kills: response.data.lifetime.all.properties.kills} );
+        this.setState( {death: response.data.lifetime.all.properties.deaths} );
+        this.setState( {win: response.data.lifetime.all.properties.wins} );
+        this.setState( {lose: (response.data.lifetime.all.properties.totalGamesPlayed - response.data.lifetime.all.properties.wins)} );
     }
 
     async get_matches_cw(config) {
         var call_api = await fetch('http://localhost:8080/stats/cw/matches', config);
         var response = await call_api.json();
-        this.setState( {matches: response.matches} );
+        for(var i= 0; i < 10; i++)
+        {
+            this.temp.push(response.data.matches[i].playerStats.score)
+        }
+        console.log(this.temp)
     }
 
     async get_weapons_cw(config) {
@@ -55,7 +62,8 @@ class Dashboard extends Component {
         const { kills, death, win, lose } = this.state;
         // const [kills, death] = [1048, 735];
         // const [win, lose] = [35, 25];
-        const last_games = [3450, 2340, 2000, 950, 3600, 2500, 2650, 1280, 1890, 2110];
+        // const last_games = [3450, 2340, 2000, 950, 3600, 2500, 2650, 1280, 1890, 2110];
+        const matches = this.temp
 
         return (
             // <Container>
@@ -67,7 +75,7 @@ class Dashboard extends Component {
                     <Col className="text-center">Ratio Win / Lose = {(win/lose).toFixed(2)}<Ratio_WL win = {win} lose = {lose}/></Col>
                 </Row>
                 <Row>
-                    <Col><LastGames lg = {last_games}/></Col>
+                    <Col><LastGames lg = {matches}/></Col>
                     <Col><BestWeapons/></Col>
                 </Row>
             {/* </Container> */}
