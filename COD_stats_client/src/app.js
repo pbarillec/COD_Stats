@@ -28,6 +28,7 @@ class App extends Component {
           <PublicRoute restricted={false} component={Home} path="/" exact />
           <PublicRoute restricted={true} component={SignIn} path="/signin" exact />
           <PublicRoute restricted={true} component={Login} path="/login" exact />
+          <PublicRoute restricted={true} component={Register} path="/register" exact />
           <PrivateRoute component={DashboardCW} path="/dashboard/cold_war" exact />
           <PrivateRoute component={DashboardWz} path="/dashboard/warzone" exact />
           <PublicRoute restricted={false} component={NotFound} />

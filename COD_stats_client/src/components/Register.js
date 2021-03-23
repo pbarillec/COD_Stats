@@ -1,36 +1,74 @@
 import React, { useState } from "react";
 import styles from "../styles/Register.css";
-
+import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import config from "../config";
+import { login } from '../utils';
+import axios from "axios";
+
 
 const Register = () => {
+
   const { register, handleSubmit, errors } = useForm();
   const [message, setMessage] = useState();
+  const history = useHistory();
 
-  const onSubmit = (data, e) => {
+
+  const onSubmit = async (data, e) => {
     setMessage({
       data: "Registration is in progress...",
       type: "alert-warning",
     });
-    fetch(`${config.baseUrl}/user/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        const hasError = "error" in data && data.error != null;
+
+    var email = data.email;
+    var password = data.password;
+    axios.post(`http://localhost:8080/auth/signup`, { email, password })
+      .then((res) => res)
+      .then(({ error, data }) => {
         setMessage({
-          data: hasError ? data.error : "Registered successfully",
-          type: hasError ? "alert-danger" : "alert-success",
+          data: error || "Registered successfully",
+          type: error ? "alert-danger" : "alert-success",
         });
 
-        !hasError && e.target.reset();
+        !error &&
+          setTimeout(() => {
+            console.log(data);
+            localStorage.setItem("access_token", data.access_token);
+            login();
+            history.push("/dashboard/cold_war");
+          }, 3000);
+
+        !error && e.target.reset();
       });
+
+    // .then((response) => {
+    //   if (response.data.access_token) {
+    //     localStorage.setItem("user", JSON.stringify({...response.data.user, access_token: response.data.access_token}));
+    //   }
+    // });
+
+    // await fetch(`http://localhost:8080/auth/signup`, {
+    //   method: "POST",
+    //   body: body
+    // })
+    //   .then((res) => res.json())
+    //   .then(({ error, data }) => {
+    //     setMessage({
+    //       data: error || "Registered successfully",
+    //       type: error ? "alert-danger" : "alert-success",
+    //     });
+
+    //     !error &&
+    //       setTimeout(() => {
+    //         console.log(data);
+    //         localStorage.setItem("access_token", data.access_token);
+    //         login();
+    //         history.push("/dashboard/cold_war");
+    //       }, 3000);
+
+    //     !error && e.target.reset();
+    //   });
   };
 
   return (
@@ -57,7 +95,7 @@ const Register = () => {
           <legend
             className={`${styles.registrationFormLegend} border rounded p-1 text-center`}
           >
-            Registration Form
+            Registration Form (use your activion's id)
           </legend>
           <form onSubmit={handleSubmit(onSubmit)} noValidate autoComplete="off">
             <div className="form-group">
@@ -96,37 +134,6 @@ const Register = () => {
               {errors.email && (
                 <span className={`${styles.errorMessage} mandatory`}>
                   {errors.email.message}
-                </span>
-              )}
-            </div>
-            <div className="form-group">
-              <label htmlFor="inputForName">Your Name</label>
-              <span className="mandatory">*</span>
-              <input
-                id="inputForName"
-                name="name"
-                type="text"
-                className="form-control"
-                aria-describedby="Enter your name"
-                placeholder="Enter your name"
-                ref={register({
-                  required: {
-                    value: true,
-                    message: "Please enter your name",
-                  },
-                  minLength: {
-                    value: 6,
-                    message: "Minimum 6 characters are allowed",
-                  },
-                  maxLength: {
-                    value: 255,
-                    message: "Maximum 255 characters are allowed",
-                  },
-                })}
-              />
-              {errors.name && (
-                <span className={`${styles.errorMessage} mandatory`}>
-                  {errors.name.message}
                 </span>
               )}
             </div>

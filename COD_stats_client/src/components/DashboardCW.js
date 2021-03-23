@@ -10,9 +10,51 @@ import NavBar from './NavBar.js'
 
 
 class Dashboard extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            kills: undefined,
+            death: undefined,
+            win: undefined,
+            lose: undefined,
+            matches: [],
+            weapons: []
+        }
+    }
+
+    async componentDidMount() {
+        const token = localStorage.getItem('access_token');
+        const config = { headers: { 'Authorization': 'Bearer ' + token }};
+        this.get_stats_cw(config);
+        this.get_matches_cw(config);
+        this.get_weapons_cw(config);
+    }
+
+    async get_stats_cw(config) {
+        var call_api = await fetch('http://localhost:8080/stats/cw', config);
+        var response = await call_api.json();
+        this.setState( {kills: response.kill} );
+        this.setState( {death: response.death} );
+        this.setState( {win: response.win} );
+        this.setState( {lose: response.lose} );
+    }
+
+    async get_matches_cw(config) {
+        var call_api = await fetch('http://localhost:8080/stats/cw/matches', config);
+        var response = await call_api.json();
+        this.setState( {matches: response.matches} );
+    }
+
+    async get_weapons_cw(config) {
+        var call_api = await fetch('http://localhost:8080/stats/cw/weapon', config);
+        var response = await call_api.json();
+        this.setState( {weapons: response.weapons} );
+    }
+
     render() {
-        const [kills, death] = [1048, 735];
-        const [win, lose] = [35, 25];
+        const { kills, death, win, lose } = this.state;
+        // const [kills, death] = [1048, 735];
+        // const [win, lose] = [35, 25];
         const last_games = [3450, 2340, 2000, 950, 3600, 2500, 2650, 1280, 1890, 2110];
 
         return (

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import styles from "../styles/Login.css";
@@ -6,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import config from "../config";
 import { login } from '../utils';
+import axios from "axios";
 
 
 const Login = () => {
@@ -19,14 +19,10 @@ const Login = () => {
       type: "alert-warning",
     });
 
-    await fetch(`https://localhost:8081/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(`username=${data.email}`, `password=${data.password}`)
-    })
-      .then((res) => res.json())
+    var email = data.email;
+    var password = data.password;
+    axios.post(`http://localhost:8080/auth/signin`, { email, password })
+      .then((res) => res)
       .then(({ error, data }) => {
         setMessage({
           data: error || "Logged in successfully, redirecting...",
@@ -35,13 +31,14 @@ const Login = () => {
 
         !error &&
           setTimeout(() => {
-            localStorage.setItem("token", data.token);
+            localStorage.setItem("access_token", data.access_token);
             login();
             history.push("/dashboard/cold_war");
           }, 3000);
 
         !error && e.target.reset();
       });
+
   };
 
   return (
@@ -132,9 +129,12 @@ const Login = () => {
                 </span>
               )}
             </div>
-            <div className="d-flex align-items-center">
+            <div className="d-flex align-items-center justify-content-center">
               <button type="submit" className="btn btn-outline-primary">
                 Login
+              </button>
+              <button className="btn btn-link">
+                <Link to="/register">New user?</Link>
               </button>
             </div>
           </form>
