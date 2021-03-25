@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactEcharts from 'echarts-for-react';
 import { Doughnut } from '@reactchartjs/react-chart.js';
 
 const Ratio_WL = (props) => {

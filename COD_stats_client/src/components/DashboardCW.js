@@ -1,28 +1,23 @@
 import React, { Component } from 'react';
-import ReactEcharts from 'echarts-for-react';
 import Ratio_KD from './stats/Ratio_KD.js';
 import Ratio_WL from './stats/Ratio_WL.js';
-import LastGames from './stats/LastGames.js';
-import BestWeapons from './stats/BestWeapons.js'
-import { Container, Row, Col } from 'reactstrap';
+import LastGamesScore from './stats/LastGamesScore.js';
+import { Row, Col } from 'reactstrap';
 import NavBar from './NavBar.js'
+import LastGamesKD from './stats/LastGamesKD.js';
 
-
-
-
-class Dashboard extends Component {
+class DashboardCW extends Component {
     constructor(props) {
         super(props)
         this.state = {
             kills: undefined,
             death: undefined,
             win: undefined,
-            lose: undefined,
-            weapons: []
+            lose: undefined
         };
-        this.temp = []
-
-
+        this.matches_score = [],
+        this.matches_kills = [],
+        this.matches_deaths = []
     }
 
     async componentDidMount() {
@@ -30,7 +25,6 @@ class Dashboard extends Component {
         const config = { headers: { 'Authorization': 'Bearer ' + token }};
         this.get_stats_cw(config);
         this.get_matches_cw(config);
-        // this.get_weapons_cw(config);
     }
 
     async get_stats_cw(config) {
@@ -47,26 +41,19 @@ class Dashboard extends Component {
         var response = await call_api.json();
         for(var i= 0; i < 10; i++)
         {
-            this.temp.push(response.data.matches[i].playerStats.score)
+            this.matches_score.push(response.data.matches[i].playerStats.score)
+            this.matches_kills.push(response.data.matches[i].playerStats.kills)
+            this.matches_deaths.push(response.data.matches[i].playerStats.deaths)
         }
-        console.log(this.temp)
-    }
-
-    async get_weapons_cw(config) {
-        var call_api = await fetch('http://localhost:8080/stats/cw/weapon', config);
-        var response = await call_api.json();
-        this.setState( {weapons: response.weapons} );
     }
 
     render() {
         const { kills, death, win, lose } = this.state;
-        // const [kills, death] = [1048, 735];
-        // const [win, lose] = [35, 25];
-        // const last_games = [3450, 2340, 2000, 950, 3600, 2500, 2650, 1280, 1890, 2110];
-        const matches = this.temp
+        const matches_score = this.matches_score;
+        const matches_kills = this.matches_kills;
+        const matches_deaths = this.matches_deaths;
 
         return (
-            // <Container>
             <div>
                 <NavBar game="Cold War"/>
                 <Row>
@@ -75,14 +62,13 @@ class Dashboard extends Component {
                     <Col className="text-center">Ratio Win / Lose = {(win/lose).toFixed(2)}<Ratio_WL win = {win} lose = {lose}/></Col>
                 </Row>
                 <Row>
-                    <Col><LastGames lg = {matches}/></Col>
-                    <Col><BestWeapons/></Col>
+                    <Col><LastGamesScore lg = {matches_score}/></Col>
+                    <Col><LastGamesKD kills = {matches_kills} deaths = {matches_deaths} /></Col>
                 </Row>
-            {/* </Container> */}
             </div>
         );  
     }
 
 };
 
-export default Dashboard;
+export default DashboardCW;

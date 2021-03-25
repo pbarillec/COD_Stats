@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import ReactEcharts from 'echarts-for-react';
-import Chart from "chart.js";
 import { Doughnut } from '@reactchartjs/react-chart.js';
 
 

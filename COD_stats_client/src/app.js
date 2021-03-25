@@ -3,7 +3,6 @@ import { BrowserRouter, Switch } from 'react-router-dom';
 import Home from './components/Home.js';
 import DashboardCW from './components/DashboardCW.js';
 import DashboardWz from './components/DashboardWz.js';
-import SignIn from './components/SignIn.js';
 import PrivateRoute from './components/PrivateRoute.js';
 import PublicRoute from './components/PublicRoute.js';
 import Register from './components/Register.js';
@@ -26,7 +25,6 @@ class App extends Component {
       <BrowserRouter>
         <Switch>
           <PublicRoute restricted={false} component={Home} path="/" exact />
-          <PublicRoute restricted={true} component={SignIn} path="/signin" exact />
           <PublicRoute restricted={true} component={Login} path="/login" exact />
           <PublicRoute restricted={true} component={Register} path="/register" exact />
           <PrivateRoute component={DashboardCW} path="/dashboard/cold_war" exact />

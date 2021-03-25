@@ -41,34 +41,6 @@ const Register = () => {
 
         !error && e.target.reset();
       });
-
-    // .then((response) => {
-    //   if (response.data.access_token) {
-    //     localStorage.setItem("user", JSON.stringify({...response.data.user, access_token: response.data.access_token}));
-    //   }
-    // });
-
-    // await fetch(`http://localhost:8080/auth/signup`, {
-    //   method: "POST",
-    //   body: body
-    // })
-    //   .then((res) => res.json())
-    //   .then(({ error, data }) => {
-    //     setMessage({
-    //       data: error || "Registered successfully",
-    //       type: error ? "alert-danger" : "alert-success",
-    //     });
-
-    //     !error &&
-    //       setTimeout(() => {
-    //         console.log(data);
-    //         localStorage.setItem("access_token", data.access_token);
-    //         login();
-    //         history.push("/dashboard/cold_war");
-    //       }, 3000);
-
-    //     !error && e.target.reset();
-    //   });
   };
 
   return (

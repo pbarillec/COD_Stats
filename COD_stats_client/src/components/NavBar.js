@@ -46,7 +46,7 @@ class NavBar extends React.Component {
                 <NavLink href="/dashboard/warzone">Warzone</NavLink>
               </NavItem>
             </Nav>
-            <NavLink href="/signin" onClick={() => this.handleLogout()}>Disconnect</NavLink>
+            <NavLink href="/login" onClick={() => this.handleLogout()}>Disconnect</NavLink>
         </Navbar>
       </div>
     );
